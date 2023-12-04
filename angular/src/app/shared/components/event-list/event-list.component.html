@@ -1,0 +1,126 @@
+
+<div class="col-12">
+  <div class="alert alert-dark mt-4 p-2" [hidden]="!message">
+    <i class="fa-solid fa-triangle-exclamation pe-2"></i>{{ message }}
+  </div>
+</div>
+<div>
+  <div class="card mt-4">
+    <div class="card-header bg-light">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h4 class="mt-1 mb-1">
+            <a
+              class="link-primary text-decoration-none"
+              ><i class="fa-solid fa-futbol me-2"></i
+              >Nogomet</a
+            >
+          </h4>
+        </div>
+      </div>
+    </div>
+    <div *ngFor="let event of events" class="card-body">
+      <a
+        [routerLink]="['/events', event._id]"
+        class="link-primary text-decoration-none"
+        ><i class="fa-solid fa-regular fa-calendar-days me-2"></i
+        >{{ event.date | date : "d. MMMM, yyyy" : "CEST" : "sl" }}</a
+      >
+    </div>
+  </div>
+</div>
+<br>
+<div *ngIf="getCurrentUser(); else elseBlock">admin lahko dodaja dogodke</div>
+<ng-template #elseBlock>
+  <div
+  [ngSwitch]="isLoggedIn()">
+      <a
+        *ngSwitchCase="true"
+        class="btn btn-primary btn-sm"
+        [ngClass]="{ 'disabled': !isConnected() }"
+        (click)="openModal(eventForm)"
+        ><i class="fa-regular fa-comment-dots pe-2"></i
+        ><span>Add Event</span></a
+      >
+      <a
+        *ngSwitchDefault
+        routerLink="/login"
+        class="btn btn-primary btn-sm"
+        [ngClass]="{ 'disabled': !isConnected() }"
+        ><i class="fa-solid fa-right-to-bracket pe-2"></i>Login to create
+        event</a
+      >
+  </div>
+</ng-template>
+<ng-template #eventForm>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">
+        <i class="fa-regular fa-comment-dots pe-2"></i>Add comment
+      </h4>
+      <button
+        type="button"
+        class="btn-close close pull-right"
+        aria-label="Close"
+        (click)="closeModal()"
+      >
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="alert alert-dark p-2" [hidden]="!formDataError">
+        <i class="fa-solid fa-triangle-exclamation pe-2"></i>{{ formDataError }}
+      </div>
+      <div class="form-group">
+        <label for="name" class="form-label mt-2">Name of event</label>
+        <textarea
+          id="event"
+          [(ngModel)]="newEvent.name"
+          rows="3"
+          class="form-control form-control-sm"
+          placeholder="Enter name"
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="description" class="form-label mt-2">Description of event</label>
+        <textarea
+          id="event"
+          [(ngModel)]="newEvent.description"
+          rows="3"
+          class="form-control form-control-sm"
+          placeholder="Enter description"
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="date" class="form-label mt-2">Date of event</label>
+        
+        <mat-form-field>
+          <input 
+            matInput 
+            [matDatepicker]="datepicker"
+            placeholder="Choose a date"
+            [(ngModel)]="newEvent.date">
+          <mat-datepicker-toggle 
+            matIconSuffix  
+            [for]="datepicker"></mat-datepicker-toggle>
+          <mat-datepicker #datepicker></mat-datepicker>
+        </mat-form-field>
+      
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-sm btn-secondary"
+        (click)="closeModal()"
+      >
+        <i class="fa-regular fa-circle-xmark me-1"></i>Cancel
+      </button>
+      <button
+        type="button"
+        class="btn btn-sm btn-primary"
+        (click)="createEvent()"
+      >
+        <i class="fa-regular fa-circle-check me-2"></i>Save
+      </button>
+    </div>
+  </ng-template>
