@@ -165,8 +165,8 @@ if (process.env.HTTPS == "true") {
   https
     .createServer(
       {
-        key: fs.readFileSync("/etc/secrets/server.key"),
-        cert: fs.readFileSync("/etc/secrets/server.cert"),
+        key: fs.readFileSync("cert/server.key"),
+        cert: fs.readFileSync("cert/server.cert"),
       },
       app
     )
