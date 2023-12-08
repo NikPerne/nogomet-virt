@@ -1,0 +1,150 @@
+#cloud-config
+packages:
+  - git
+
+write_files:
+  - path: /root/setup.sh
+    content: |
+      #!/bin/bash
+      set -e
+
+      #install and run nginx
+      sudo apt install nginx -y
+
+      cd /etc/nginx/sites-available
+
+      cat >> /etc/nginx/sites-available/nogomet.config << \EOF
+      #The Nginx server instance
+      server{
+        listen 80;
+        server_name nogomet.test.si;
+        location / {
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header Host $host;
+          proxy_pass https://localhost:3000;
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+          # location /overview {
+          #     proxy_pass http://127.0.0.1:3000$request_uri;
+          #     proxy_redirect off;
+          # }
+        }
+      }
+      EOF
+
+      sudo cp /etc/nginx/sites-available/nogomet.config /etc/nginx/sites-enabled/
+
+      cd /etc/nginx/sites-enabled/
+
+      sudo nginx -t
+
+      sudo systemctl restart nginx
+      # Install nodejs 18
+
+      curl -s https://deb.nodesource.com/setup_18.x | sudo bash
+
+      sudo apt install nodejs -y
+
+      #Start mongoDB
+      apt-get install gnupg curl
+
+      curl -fsSL https://pgp.mongodb.com/server-7.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
+
+      echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+
+      apt-get update
+
+      apt-get install -y mongodb-org
+
+      systemctl start mongod
+
+      systemctl enable mongod
+
+      cd /home/ubuntu/
+
+      # Clone the Git repository
+      git clone https://github.com/NikPerne/nogomet-virt.git
+      cd /home/ubuntu/nogomet-virt
+      
+      # Create the .env file
+      touch .env
+      cat >> .env << EOF
+      MONGODB_ATLAS_URI=mongodb+srv://app:Oklop123@vajecluster.t5qjeje.mongodb.net/?retryWrites=true&w=majority
+      NODE_ENV=test
+      JWT_SECRET=toleNašeGeslo
+      HTTPS=true
+      EOF
+
+      # Create the cert directory and add server.key and server.cert
+      mkdir cert
+      cd cert
+      touch server.cert
+      touch server.key
+      cat >> server.cert << EOF
+      -----BEGIN CERTIFICATE-----
+      MIID7TCCAtWgAwIBAgIUNblftTGuW8rtypAbkAvJyOp0LKEwDQYJKoZIhvcNAQEL
+      BQAwgYUxCzAJBgNVBAYTAlNJMQ4wDAYDVQQIDAVLcmFuajEOMAwGA1UEBwwFS3Jh
+      bmoxDjAMBgNVBAoMBUdlbmlzMQ4wDAYDVQQLDAVHZW5pczESMBAGA1UEAwwJbG9j
+      YWxob3N0MSIwIAYJKoZIhvcNAQkBFhNuaWsucGVybmVAZ21haWwuY29tMB4XDTIz
+      MTEwOTEzNTMzMloXDTIzMTIwOTEzNTMzMlowgYUxCzAJBgNVBAYTAlNJMQ4wDAYD
+      VQQIDAVLcmFuajEOMAwGA1UEBwwFS3JhbmoxDjAMBgNVBAoMBUdlbmlzMQ4wDAYD
+      VQQLDAVHZW5pczESMBAGA1UEAwwJbG9jYWxob3N0MSIwIAYJKoZIhvcNAQkBFhNu
+      aWsucGVybmVAZ21haWwuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+      AQEAu6dAsEhdBUsdonU+QbMtYdHGKwnt4QdFxgGCH4MciumLI/+d59En0QrcP4eV
+      7SjkGKucOHabX+HS979VjPOs0YzXXVrep7nL7LGXbh3iuqpOq7GUqLRVuJkAZu6+
+      9Pdpt2MZB4ykJjpwrOr+HwfOUa0z0QxppSzaFvln+LpiIVh3Q9gOzyinglkw/7l7
+      ivJhW0UBJAzH5I8t4fyL9lmU4uuRLmQ7DjkDun6SBc71R1s6svc3ZMU8NOfZgI9g
+      DAMCbeTUkfChnPHMHrPOOX4w2lf47nSZ/OygJkoroXdcGYEA+nTtuWlT6LHEH93Z
+      Q/JOlirQfLTYgGDoTbAH8BKXEwIDAQABo1MwUTAdBgNVHQ4EFgQU/N7dbCAhTbc3
+      x38S3C0SOa6aoY8wHwYDVR0jBBgwFoAU/N7dbCAhTbc3x38S3C0SOa6aoY8wDwYD
+      VR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAZZJIRipw+sxWvbOV78JR
+      mK2c1EDA9hxnJk4XAtEk4zbfgDbRmSVUgFB4Tq+jfA2fMCX0/GQLuBW3/FWFkSHi
+      o+4TP65iO9BkyHAx+T21+z+jJbInaDrmwu/pfAiAjlq4vzCCclqLn8cEsYgtRqem
+      6gjG8y1UkkwioDFxV/a++gVLpT0bBFfASs+w5uuS15u0nO2q8yMGMzFKv3iQ8jWU
+      zIPmVRW33oxkR9zMA1nZSHNrB062Ie7liBYRZ9KH/LtQObVB7jGOkx5+OJm3ZtA4
+      IIBJW59Ga5qElSrF44cBCOnUYKexh3XkawoqOefk9s2FMCmZgyt64ZMDx9yRJd4W
+      xQ==
+      -----END CERTIFICATE-----
+      EOF
+      cat >> server.key << EOF
+      -----BEGIN PRIVATE KEY-----
+      MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7p0CwSF0FSx2i
+      dT5Bsy1h0cYrCe3hB0XGAYIfgxyK6Ysj/53n0SfRCtw/h5XtKOQYq5w4dptf4dL3
+      v1WM86zRjNddWt6nucvssZduHeK6qk6rsZSotFW4mQBm7r7092m3YxkHjKQmOnCs
+      6v4fB85RrTPRDGmlLNoW+Wf4umIhWHdD2A7PKKeCWTD/uXuK8mFbRQEkDMfkjy3h
+      /Iv2WZTi65EuZDsOOQO6fpIFzvVHWzqy9zdkxTw059mAj2AMAwJt5NSR8KGc8cwe
+      s845fjDaV/judJn87KAmSiuhd1wZgQD6dO25aVPoscQf3dlD8k6WKtB8tNiAYOhN
+      sAfwEpcTAgMBAAECggEAAkTJuG03iq/Xd4uuqVau5Bwy0Xm47DE3+7va7zdDlL5c
+      FfRU3A+gSUZgq/f0rRMDJvU0L06SdFH481EsifFhk9WoaOgyAZnHyGB2nI3fRt3L
+      k7HS7UiOMhbPdW8ffztahi1m3mYp5I3CUk+JAPu0LTKd32zPU4A7psQfKK0AMLep
+      aURbZ/ldcq5HeUSlCaXyhmhEQa69kQD3evtPpsiru0cM1v4I6M57QdXDdr5pJZOM
+      wtQVQOcKUYxkziARNj3oIXxUiv/CRVC2EXu0/1z3HkLFVpkCDIGno2BVvhXcvkAg
+      QwrT3L7AsDeNmXw2eNglZSKyXb95a8imZASoUIoxqQKBgQD5lXo/Cn37sevhL7Sp
+      ashgpdPkoHgn0QTHZpTpGR3rgJ+O9ard/MyuTD5sOHhSkC1535xdlU9DB8x4I3pu
+      8s+TMymKDqUG/GGNa/c/M9tf1QU5Lk+xRFlSPm1RCU9uvTLGpaqPoGwud+a4tZdI
+      osJDYO3Ikl9mIiTbFTpFsb5D5wKBgQDAejUZb1XiL++vYUQoFRNwD/njxeyI5WGI
+      o6TR5do+PYjSEQYTqzLNTgq9flP6foT86DDt9GoOGE5sSfPghUrK3KtXp0biwuzZ
+      gZc/TWAaZfcC8XdOHV6Xxupiso/pcm0UXep+HVBB4gOlTedfgCPL5dWxgUVz5nNa
+      OYV7oxQt9QKBgG/Pt2RmnuoTW0kWxijf3cTuhW73NN0hlrJ+ElgbGHxYsyKojFPG
+      3St4nL5+zeivDrB6rOJ/8XJmHAP2YPMzdCrN0N44kVX/2vQwWiPGZ5EXLa/gP3N6
+      20ktDmwvb5Z8zDKSJUcS52Qp8wLs10mDIORumBgy+uoWgcxkRibS6hohAoGAIzp6
+      24PoKTTy3puj2N46p4kVCJ5iM5AgMN0avpwePMQQdbpN7W2pJ7CAALzNbAyaFJv+
+      0J6qhpfmSqWicFaVINoQtkNUkw5wQUMZxqlHzK0a77v4RSDU/lyW66eY9XZPBqpF
+      c+1Xgid22VuP3IfchWY0nX92kcb9F+dtSfrIJ70CgYEAyn0cHCBx7AKh+42BR9KX
+      HTbmvhIJgE9xkezV1N0AAlNTPli7bKiiA0ERvdqF4ZH4hLfXn01MSaejRkY5WxjM
+      76lNGM/mK7ieg/V43Kn5Zb5marEIXKKKfr3z7yvz0v7EasAcFZDWKKGSh+XhVKWm
+      whqfQF7fdsi/uX7sO4375LQ=
+      -----END PRIVATE KEY-----
+      EOF
+
+      cd ..
+
+      # Install npm packages and start the application
+      npm install -y
+      npm start
+
+runcmd:
+  - chmod +x /root/setup.sh
+  - /root/setup.sh
+                                   
