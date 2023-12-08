@@ -5,6 +5,8 @@ if (process.env.NODE_ENV === "production")
   dbURI = process.env.MONGODB_ATLAS_URI;
 else if (process.env.NODE_ENV === "test")
   dbURI = "mongodb://127.0.0.1/Demo";
+else if (process.env.NODE_ENV === "dev")
+  dbURI = "mongodb://web-dev-mongo-db/Demo";
 mongoose.connect(dbURI);
 
 mongoose.connection.on("connected", () =>

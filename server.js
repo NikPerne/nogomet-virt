@@ -173,7 +173,7 @@ if (process.env.HTTPS == "true") {
     .listen(port, () => {
       console.log(
         `Secure demo app started in '${
-          process.env.NODE_ENV || "development"
+          process.env.NODE_ENV || "dev"
         } mode' listening on port ${port}!`
       );
     });
@@ -181,7 +181,7 @@ if (process.env.HTTPS == "true") {
   app.listen(port, () => {
     console.log(
       `Demo app started in ${
-        process.env.NODE_ENV || "development"
+        process.env.NODE_ENV || "dev"
       } mode listening on port ${port}!`
     );
   });
