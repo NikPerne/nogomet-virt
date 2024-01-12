@@ -26,7 +26,9 @@
   },
   "devDependencies": {
     "chai": "^4.3.10",
+    "chromedriver": "^118.0.1",
     "mocha": "^10.2.0",
-    "mochawesome": "^7.1.3"
+    "mochawesome": "^7.1.3",
+    "selenium-webdriver": "^4.14.0"
   }
 }
