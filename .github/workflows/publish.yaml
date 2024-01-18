@@ -11,7 +11,7 @@ on:
 
 env:
   DOCKER_REGISTRY: ghcr.io
-  DOCKER_IMAGE_NAME: NikPerne/nogomet-virt
+  DOCKER_IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   docker:
