@@ -33,17 +33,20 @@ const allowedCodelists = [
   const eventsList = async (req, res) => {
     let nResults = parseInt(req.query.nResults);
     nResults = isNaN(nResults) ? 10 : nResults;
+  
     try {
       let events = await Event.aggregate([
-        { $limit: nResults },
+        { $sort: { date: -1 } }, // Sort events in descending order based on date
+        { $limit: nResults },    // Limit the results to the specified number
       ]);
+  
       if (!events || events.length == 0)
         res.status(404).json({ message: "No events found." });
-      else res.status(200).json(events);
+      else
+        res.status(200).json(events);
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
-
   };
 
   /**

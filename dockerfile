@@ -1,4 +1,5 @@
-FROM node:20-slim
+FROM alpine as builder
+RUN apk add --update npm
 # Default application directory for all subsequent commands (COPY, RUN, CMD etc.).
 WORKDIR /app
 # Copy package.json and install dependencies.

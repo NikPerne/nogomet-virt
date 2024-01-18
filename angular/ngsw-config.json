@@ -33,6 +33,8 @@
       "urls": [
         "http://127.0.0.1:3000/**",
         "https://127.0.0.1:3000/**",
+        "http://localhost:3000/**",
+        "https://localhost:3000/**",
         "http://host.docker.internal:3000/**",
         "https://host.docker.internal:3000/**",
         "https://nogomet.onrender.com/api/**"
