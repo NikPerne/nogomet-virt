@@ -8,17 +8,15 @@ Aplikacija Nogomet je namenjena organizaciji in sledenju rekreativnih nogometnih
 
 ## Zaslonske maske:
 
-1. **Domača stran:** Prva stran, ki se prikaže ob obisku naslova aplikacije. Uporabniki lahko dostopajo do prijave preko AAD (Azure Active Directory) ali se registrirajo s standardnim uporabniškim računom.
+1. **Dogodki (Events):** Ta stran omogoča pregled nogometnih dogodkov in upravljanje z njimi (urejanje, brisanje in dodajanje). Na tej strani najdemo tudi gumb za izvoz vseh podatkov o dogodkih v CSV datoteko.
 
-2. **Dogodki (Events):** Ta stran omogoča pregled nogometnih dogodkov in upravljanje z njimi (urejanje, brisanje in dodajanje). Na tej strani najdemo tudi gumb za izvoz vseh podatkov o dogodkih v CSV datoteko.
+2. **Prijavljeni (Signups):** Enaka struktura kot pri dogodkih, vendar prikazuje prijave uporabnikov na posamezen dogodek.
 
-3. **Prijavljeni (Signups):** Enaka struktura kot pri dogodkih, vendar prikazuje prijave uporabnikov na posamezen dogodek.
+3. **Registracija in prijava s standardnim uporabniškim računom:** Strani za registracijo in prijavo uporabnika z uporabo uporabniškega računa v podatkovni bazi.
 
-4. **Registracija in prijava s standardnim uporabniškim računom:** Strani za registracijo in prijavo uporabnika z uporabo uporabniškega računa v podatkovni bazi.
+4. **Urejanje dogodka ali prijave:** Strani za posodabljanje podatkov o obstoječem dogodku ali prijavi. Podatki se samodejno izpolnijo.
 
-5. **Urejanje dogodka ali prijave:** Strani za posodabljanje podatkov o obstoječem dogodku ali prijavi. Podatki se samodejno izpolnijo.
-
-6. **Dodaj nov dogodek ali prijavo:** Enako kot urejanje, vendar brez predhodnih podatkov. Uporabnik vnese vse potrebne informacije, nato pa shrani, da ustvari nov dogodek ali prijavo.
+5. **Dodaj nov dogodek ali prijavo:** Enako kot urejanje, vendar brez predhodnih podatkov. Uporabnik vnese vse potrebne informacije, nato pa shrani, da ustvari nov dogodek ali prijavo.
 
 ## Dostop do produkcije:
 - [https://nogomet.onrender.com](https://nogomet.onrender.com)
