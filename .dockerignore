@@ -9,3 +9,5 @@ node_modules
 data
 angular/**
 !angular/build/**
+yaml-deploy-k8s/**
+your-node-app/**
