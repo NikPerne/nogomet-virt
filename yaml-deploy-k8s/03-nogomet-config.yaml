@@ -1,4 +1,9 @@
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: nogomet-virt
+---
+apiVersion: v1
 kind: Secret
 metadata:
   name: nogomet-virt-config
