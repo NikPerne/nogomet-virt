@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nogomet-virt
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nogomet-virt-deployment
+  namespace: nogomet-virt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nogomet-virt
+  template:
+    metadata:
+      labels:
+        app: nogomet-virt
+    spec:
+      containers:
+        - name: nogomet-virt
+          image: ghcr.io/nikperne/nogomet-virt:1.0.1
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: nogomet-virt-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nogomet-virt-service
+  namespace: nogomet-virt
+spec:
+  selector:
+    app: nogomet-virt
+  ports:
+    - protocol: TCP
+      port: 3000
