@@ -17,7 +17,7 @@ spec:
         - name: mongodb
           image: mongo:7.0.5
           ports:
-            - containerPort: 27018
+            - containerPort: 27017
           volumeMounts:
             - name: mongodb-data
               mountPath: /data/db
@@ -42,5 +42,5 @@ spec:
     app: mongodb
   ports:
     - protocol: TCP
-      port: 27018
-      targetPort: 27018
+      port: 27017
+      targetPort: 27017
