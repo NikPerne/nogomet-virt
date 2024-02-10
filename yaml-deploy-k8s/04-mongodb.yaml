@@ -30,7 +30,7 @@ spec:
             claimName: mongodb-pvc
         - name: init-script
           configMap:
-            name: mongodb-config
+            name: mongodb-init-script
 ---
 apiVersion: v1
 kind: Service
