@@ -6,8 +6,11 @@ metadata:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: nogomet-virt-config
+  name: nogomet-virt-env
   namespace: nogomet-virt
 type: Opaque
 data:
-  .env: TU9OR09EQl9BVExBU19VUkk9bW9uZ29kYjovL2FwcDpPa2xvcDEyM0Btb25nb2RiLXNlcnZpY2UubW9uZ29kYi5zdmM6MjcwMTcKTk9ERV9FTlY9dGVzdApKV1RfU0VDUkVUPXRvbGVOYcWhZUdlc2xvCkhUVFBTPWZhbHNl
+  mongodb: bW9uZ29kYjovL2FwcDpPa2xvcDEyM0Btb25nb2RiLXNlcnZpY2UubW9uZ29kYi5zdmM6MjcwMTc=
+  node_env: cHJvZHVjdGlvbg==
+  jwt: dG9sZU5hxaFlR2VzbG8=
+  https: ZmFsc2U=

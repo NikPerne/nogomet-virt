@@ -19,9 +19,28 @@ spec:
           image: ghcr.io/nikperne/nogomet-virt:1.0.1
           ports:
             - containerPort: 8080
-          envFrom:
-            - secretRef:
-                name: nogomet-virt-config
+          env:
+            - name: MONGODB_ATLAS_URI
+              valueFrom:
+                secretKeyRef:
+                  name: nogomet-virt-env
+                  key: mongodb
+            - name: NODE_ENV
+              valueFrom:
+                secretKeyRef:
+                  name: nogomet-virt-env
+                  key: node_env
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: nogomet-virt-env
+                  key: jwt
+            - name: HTTPS
+              valueFrom:
+                secretKeyRef:
+                  name: nogomet-virt-env
+                  key: https
+
 ---
 apiVersion: v1
 kind: Service
