@@ -2,7 +2,7 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: standard
-provisioner: k8s.io/minikube-hostpath  # This is an example, adjust based on your environment
+provisioner: k8s.io/minikube-hostpath
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -16,7 +16,7 @@ spec:
     - ReadWriteOnce
   storageClassName: standard
   hostPath:
-    path: /data/mongodb  # This is an example, adjust based on your environment
+    path: /data/mongodb
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
