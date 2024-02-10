@@ -15,11 +15,11 @@ data:
     net:
       bindIp: 0.0.0.0
   init.js: |
-    db = db.getSiblingDB('nogmet');
+    db = db.getSiblingDB('nogomet');
     db.createUser({
       user: 'app',
       pwd: 'Oklop123',
-      roles: [{ role: 'readWrite', db: 'nogmet' }]
+      roles: [{ role: 'readWrite', db: 'nogomet' }]
     });
 ---
 apiVersion: v1
