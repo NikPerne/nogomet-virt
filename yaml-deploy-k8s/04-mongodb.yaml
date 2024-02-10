@@ -1,10 +1,9 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: mongodb
   namespace: mongodb
 spec:
-  serviceName: mongodb
   replicas: 3
   selector:
     matchLabels:
@@ -14,14 +13,6 @@ spec:
       labels:
         app: mongodb
     spec:
-      initContainers:
-        - name: init-mongodb
-          image: mongo:7.0.5
-          command: [ "sh", "-c", "mongo < /docker-entrypoint-initdb.d/init-script.js" ]
-          volumeMounts:
-            - name: init-script
-              mountPath: /docker-entrypoint-initdb.d
-              readOnly: true
       containers:
         - name: mongodb
           image: mongo:7.0.5
@@ -33,10 +24,6 @@ spec:
             - name: init-script
               mountPath: /docker-entrypoint-initdb.d
               readOnly: true
-          command:
-            - mongod
-            - "--bind_ip_all"
-          args: ["--replSet", "rs0"]
       volumes:
         - name: mongodb-data
           persistentVolumeClaim:
@@ -44,14 +31,6 @@ spec:
         - name: init-script
           configMap:
             name: mongodb-init-script
-  volumeClaimTemplates:
-    - metadata:
-        name: mongodb-pvc
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        resources:
-          requests:
-            storage: 10Gi
 ---
 apiVersion: v1
 kind: Service
