@@ -10,7 +10,7 @@ metadata:
   namespace: nogomet-virt
 type: Opaque
 data:
-  mongodb: bW9uZ29kYjovL2FwcDpPa2xvcDEyM0Btb25nb2RiLXNlcnZpY2UubW9uZ29kYi5zdmM6MjcwMTc=
+  mongodb: bW9uZ29kYjovL2FwcDpPa2xvcDEyM0Btb25nb2RiLXNlcnZpY2UubW9uZ29kYi5zdmM6MjcwMTg=
   node_env: cHJvZHVjdGlvbg==
   jwt: dG9sZU5hxaFlR2VzbG8=
   https: ZmFsc2U=
