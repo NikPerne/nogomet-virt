@@ -14,6 +14,14 @@ spec:
       labels:
         app: mongodb
     spec:
+      initContainers:
+        - name: init-mongodb
+          image: mongo:7.0.5
+          command: [ "sh", "-c", "mongo < /docker-entrypoint-initdb.d/init-script.js" ]
+          volumeMounts:
+            - name: init-script
+              mountPath: /docker-entrypoint-initdb.d
+              readOnly: true
       containers:
         - name: mongodb
           image: mongo:7.0.5
@@ -27,9 +35,8 @@ spec:
               readOnly: true
           command:
             - mongod
-            - "--replSet"
-            - "rs0"
             - "--bind_ip_all"
+          args: ["--replSet", "rs0"]
       volumes:
         - name: mongodb-data
           persistentVolumeClaim:
@@ -37,6 +44,14 @@ spec:
         - name: init-script
           configMap:
             name: mongodb-init-script
+  volumeClaimTemplates:
+    - metadata:
+        name: mongodb-pvc
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 10Gi
 ---
 apiVersion: v1
 kind: Service
