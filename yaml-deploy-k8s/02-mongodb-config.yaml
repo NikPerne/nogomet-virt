@@ -14,6 +14,13 @@ data:
       dbPath: /data/db
     net:
       bindIp: 0.0.0.0
+  init.js: |
+    db = db.getSiblingDB('nogmet');
+    db.createUser({
+      user: 'app',
+      pwd: 'Oklop123',
+      roles: [{ role: 'readWrite', db: 'nogmet' }]
+    });
 ---
 apiVersion: v1
 kind: Secret

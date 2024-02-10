@@ -21,10 +21,16 @@ spec:
           volumeMounts:
             - name: mongodb-data
               mountPath: /data/db
+            - name: init-script
+              mountPath: /docker-entrypoint-initdb.d
+              readOnly: true
       volumes:
         - name: mongodb-data
           persistentVolumeClaim:
             claimName: mongodb-pvc
+        - name: init-script
+          configMap:
+            name: mongodb-config
 ---
 apiVersion: v1
 kind: Service
