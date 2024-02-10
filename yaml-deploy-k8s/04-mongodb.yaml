@@ -1,10 +1,11 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: mongodb
   namespace: mongodb
 spec:
-  replicas: 1
+  serviceName: mongodb
+  replicas: 3
   selector:
     matchLabels:
       app: mongodb
@@ -24,6 +25,11 @@ spec:
             - name: init-script
               mountPath: /docker-entrypoint-initdb.d
               readOnly: true
+          command:
+            - mongod
+            - "--replSet"
+            - "rs0"
+            - "--bind_ip_all"
       volumes:
         - name: mongodb-data
           persistentVolumeClaim:
